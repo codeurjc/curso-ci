@@ -1,0 +1,28 @@
+node {
+    
+   stage ('Checkout') {
+      git url: 'https://github.com/codeurjc/curso-ci.git'
+   }
+
+   stage ('Build Java') {
+
+      docker.image('maven').inside('-v $HOME/.m2:/root/.m2') {
+
+        sh 'cd ejem2; mvn package'
+
+        sh 'cd ejem2; mvn deploy'
+      }
+   }
+
+   stage ('Docker Image') {
+
+      sh 'cd ejem2; ./build-image.sh'
+
+      sh 'cd ejem2; docker push micaelgallego/curso-ci-ejem3:latest'
+   }
+
+  always {
+      step([$class: 'JUnitResultArchiver', 
+         testResults: '**/target/surefire-reports/TEST-*.xml'])
+  }
+}
