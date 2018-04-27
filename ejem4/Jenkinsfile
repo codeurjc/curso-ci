@@ -1,0 +1,33 @@
+node {
+    
+   stage ('Checkout') {
+      git url: 'https://github.com/codeurjc/curso-ci.git'
+   }
+
+   stage ('Build Java') {
+
+      ARCHIVA_IP = sh (
+        script: 'docker inspect -f \'{{.NetworkSettings.IPAddress }}\' archiva',
+        returnStdout: true
+      ).trim()
+
+      docker.image('maven').inside('-v $HOME/.m2:/root/.m2') {
+
+        sh 'cd ejem4; mvn package'
+
+        sh 'cd ejem4; mvn deploy -DarchivaURL=http://'+ ARCHIVA_IP + ':8080' 
+      }
+   }
+
+   stage ('Docker Image') {
+
+      sh 'cd ejem4; ./build-image.sh'
+
+      sh 'cd ejem4; docker push micaelgallego/curso-ci-ejem4:latest'
+   }
+
+  always {
+      step([$class: 'JUnitResultArchiver', 
+         testResults: '**/target/surefire-reports/TEST-*.xml'])
+  }
+}
