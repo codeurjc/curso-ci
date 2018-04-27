@@ -6,11 +6,16 @@ node {
 
    stage ('Build Java') {
 
+      ARCHIVA_IP = sh (
+        script: 'docker inspect -f \'{{.NetworkSettings.IPAddress }}\' archiva',
+        returnStdout: true
+      ).trim()
+
       docker.image('maven').inside('-v $HOME/.m2:/root/.m2') {
 
         sh 'cd ejem3; mvn package'
 
-        sh 'cd ejem3; mvn deploy'
+        sh 'cd ejem3; mvn deploy -DrepositoryId=archiva.snapshots -Durl=http://${ARCHIVA_IP}:8081/repository/snapshots/
       }
    }
 
