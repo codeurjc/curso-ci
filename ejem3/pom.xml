@@ -49,7 +49,5 @@
       <url>http://localhost:8081/repository/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
-  
-</project>
 
 </project>
