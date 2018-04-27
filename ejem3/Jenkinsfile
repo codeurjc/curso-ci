@@ -17,7 +17,7 @@ node {
 
         sh 'cd ejem3; mvn package'
 
-        sh 'cd ejem3; mvn deploy -DarchivaURL=http:\\'+ ARCHIVA_IP + ':8080' 
+        sh 'cd ejem3; mvn deploy -DarchivaURL=http://'+ ARCHIVA_IP + ':8080' 
       }
    }
 
