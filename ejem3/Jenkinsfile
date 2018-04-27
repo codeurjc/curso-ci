@@ -15,6 +15,8 @@ node {
 
       docker.image('maven').inside('-v $HOME/.m2:/root/.m2') {
 
+        sh 'cat /root/.m2/settings.xml'
+
         sh 'cd ejem3; mvn package'
 
         sh 'cd ejem3; mvn deploy -DarchivaURL=http://'+ ARCHIVA_IP + ':8080' 
