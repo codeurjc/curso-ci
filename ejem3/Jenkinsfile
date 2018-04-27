@@ -15,7 +15,7 @@ node {
 
         sh 'cd ejem3; mvn package'
 
-        sh 'cd ejem3; mvn deploy -DrepositoryId=archiva.snapshots -Durl=http://${ARCHIVA_IP}:8081/repository/snapshots/
+        sh 'cd ejem3; mvn deploy -DrepositoryId=archiva.snapshots -Durl=http://${ARCHIVA_IP}:8081/repository/snapshots/'
       }
    }
 
