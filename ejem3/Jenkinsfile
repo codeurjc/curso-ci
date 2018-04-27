@@ -11,11 +11,13 @@ node {
         returnStdout: true
       ).trim()
 
+      echo 'IP: $'
+
       docker.image('maven').inside('-v $HOME/.m2:/root/.m2') {
 
         sh 'cd ejem3; mvn package'
 
-        sh 'cd ejem3; mvn deploy -DrepositoryId=archiva.snapshots -Durl=http://${ARCHIVA_IP}:8081/repository/snapshots/'
+        sh 'cd ejem3; mvn deploy -DrepositoryId=archiva.snapshots -Durl=http://'+ ARCHIVA_IP + ':8081/repository/snapshots/'
       }
    }
 
