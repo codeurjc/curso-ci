@@ -10,9 +10,6 @@ node {
 
         sh 'cd ejem1; mvn package'
       }
-
-      step([$class: 'JUnitResultArchiver', 
-         testResults: '**/target/surefire-reports/TEST-*.xml'])
    }
 
    stage ('Docker Image') {
@@ -21,4 +18,9 @@ node {
 
       sh 'cd ejem1; docker push micaelgallego/curso-ci-ejem1:latest'
    }
+
+  always {
+      step([$class: 'JUnitResultArchiver', 
+         testResults: '**/target/surefire-reports/TEST-*.xml'])
+  }
 }
